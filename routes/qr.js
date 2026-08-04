@@ -20,7 +20,7 @@ const {
 } = require("@whiskeysockets/baileys");
 
 const getSessionDir = () => {
-    const dir = path.join(os.tmpdir(), 'silva-sessions', 'qr');
+    const dir = path.join(os.tmpdir(), 'BLOODRAVEN-XMD-sessions', 'qr');
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     return dir;
 };
@@ -30,7 +30,7 @@ const getQRTemplate = (qrImage) => `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>SILVA NEXUS — QR Auth</title>
+<title>BLOODRAVEN-XMD — QR Auth</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -286,10 +286,10 @@ router.get('/', async (req, res) => {
                         const compressed = zlib.gzipSync(Buffer.from(credsJson)).toString('base64');
                         const uid = sock.user?.id;
                         if (uid) {
-                            await sock.sendMessage(uid, { text: `Silva~${compressed}` });
+                            await sock.sendMessage(uid, { text: `BLOODRAVEN-XMD~${compressed}` });
                             await delay(1500);
                             await sock.sendMessage(uid, {
-                                text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *SILVA TECH NEXUS*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/SilvaTechB/silva-md-bot`
+                                text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *BLOODRAVEN-XMD BOT*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/caseyweb/BLOOD-RAVEN-XMD`
                             });
                         }
                     } catch (e) {
