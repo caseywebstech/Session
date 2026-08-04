@@ -21,7 +21,7 @@ const {
 } = require("@whiskeysockets/baileys");
 
 const getSessionDir = () => {
-    const dir = path.join(os.tmpdir(), 'silva-sessions', 'pair');
+    const dir = path.join(os.tmpdir(), 'BLOODRAVEN-XMD-sessions', 'pair');
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     return dir;
 };
@@ -114,10 +114,10 @@ router.get('/', async (req, res) => {
                         const compressed = zlib.gzipSync(Buffer.from(credsJson)).toString('base64');
                         const uid = sock.user?.id;
                         if (uid) {
-                            await sock.sendMessage(uid, { text: `Silva~${compressed}` });
+                            await sock.sendMessage(uid, { text: `BLOODRAVEN-XMD~${compressed}` });
                             await delay(1500);
                             await sock.sendMessage(uid, {
-                                text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *CASEYRHODES TECH NEXUS*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/caseyweb/BLOOD-RAVEN-XMD`
+                                text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *BLOODRAVEN-XMD BOT*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/caseyweb/BLOOD-RAVEN-XMD`
                             });
                         }
                     } catch (e) {
