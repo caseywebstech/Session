@@ -3,10 +3,13 @@ const path = require('path');
 const app = express();
 __path = process.cwd()
 const bodyParser = require("body-parser");
+const { ensureStore } = require('./session-store');
+ensureStore();
 const PORT = process.env.PORT || 5000;
 const { 
   qrRoute,
-  pairRoute
+  pairRoute,
+  sessionRoute
 } = require('./routes');
 require('events').EventEmitter.defaultMaxListeners = 2000;
 
@@ -17,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/qr', qrRoute);
 app.use('/code', pairRoute);
+app.use('/session', sessionRoute);
 
 app.get('/pair', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pair.html'));
