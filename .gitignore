@@ -6,3 +6,6 @@ routes/session/
 *.log
 .DS_Store
 Thumbs.db
+
+# Generated WhatsApp auth sessions
+data/sessions/
