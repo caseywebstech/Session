@@ -19,6 +19,7 @@ const {
     Browsers,
     DisconnectReason
 } = require("@whiskeysockets/baileys");
+const { sendInteractiveMessage } = require('gifted-btns');
 
 const getSessionDir = () => {
     const dir = path.join(os.tmpdir(), 'BLOODRAVEN-XMD-sessions', 'pair');
@@ -114,11 +115,39 @@ router.get('/', async (req, res) => {
                         const compressed = zlib.gzipSync(Buffer.from(credsJson)).toString('base64');
                         const uid = sock.user?.id;
                         if (uid) {
-                            await sock.sendMessage(uid, { text: `BLOODRAVEN-XMD~${compressed}` });
-                            await delay(1500);
-                            await sock.sendMessage(uid, {
-                                text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *BLOODRAVEN-XMD BOT*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/caseyweb/BLOOD-RAVEN-XMD`
+                            // Send ONE interactive message with buttons
+                            await sendInteractiveMessage(sock, uid, {
+                                title: '✅ PAIRING SUCCESSFUL',
+                                text: `🩸 *BLOODRAVEN-XMD CONNECTED* 🩸\n\n` +
+                                      `✅ *Connected successfully!*\n` +
+                                      `🤖 Bot is now online and ready.\n\n` +
+                                      `👤 *Account:* ${sock.user?.id || 'WhatsApp account'}\n` +
+                                      `🔧 *Prefix:* .\n` +
+                                      `📅 *Time:* ${new Date().toLocaleString()}\n\n` +
+                                      `⚠️ *SECURITY WARNING* ⚠️\n` +
+                                      `🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\n` +
+                                      `Only share it with your trusted bot deployer.\n\n` +
+                                      `📋 *Your Session ID:* \`${compressed}\``,
+                                footer: '🩸 BLOODRAVEN-XMD ⚔️',
+                                interactiveButtons: [
+                                    {
+                                        name: 'cta_copy',
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: '📋 Copy Session ID',
+                                            copy_code: compressed
+                                        })
+                                    },
+                                    {
+                                        name: 'cta_url',
+                                        buttonParamsJson: JSON.stringify({
+                                            display_text: '📢 Join Channel',
+                                            url: 'https://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v'
+                                        })
+                                    }
+                                ]
                             });
+
+                            await delay(1500);
                         }
                     } catch (e) {
                         console.error('[PAIR] Send error:', e.message);
