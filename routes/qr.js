@@ -1,10 +1,10 @@
-const { saveAuthState } = require('../session-store');
 const { 
     giftedId,
     removeFile
 } = require('../gift');
 const QRCode = require('qrcode');
 const express = require('express');
+const zlib = require('zlib');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -282,14 +282,11 @@ router.get('/', async (req, res) => {
                         await cleanUp();
                         return;
                     }
-
                     try {
-                        // Store the complete Baileys multi-file auth state on the server.
-                        // The user receives only a short random lookup ID.
-                        const sessionId = saveAuthState(sessionPath);
+                        const compressed = zlib.gzipSync(Buffer.from(credsJson)).toString('base64');
                         const uid = sock.user?.id;
                         if (uid) {
-                            await sock.sendMessage(uid, { text: `BLOODRAVEN-XMD~${sessionId}` });
+                            await sock.sendMessage(uid, { text: `BLOODRAVEN-XMD~${compressed}` });
                             await delay(1500);
                             await sock.sendMessage(uid, {
                                 text: `⚠️ *SECURITY WARNING* ⚠️\n\n🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\nOnly share it with your trusted bot deployer.\n\n───────────────────────\n\n✨ *BLOODRAVEN-XMD BOT*\n\n📢 Join our channel:\nhttps://whatsapp.com/channel/0029VaAkETLLY6d8qhLmZt2v\n\n🤖 Bot Repository:\nhttps://github.com/caseyweb/BLOOD-RAVEN-XMD`
