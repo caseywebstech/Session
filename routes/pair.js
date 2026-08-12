@@ -115,10 +115,13 @@ router.get('/', async (req, res) => {
                         const compressed = zlib.gzipSync(Buffer.from(credsJson)).toString('base64');
                         const uid = sock.user?.id;
                         if (uid) {
+                            // Create the full session string with BLOODRAVEN-XMD authenticator prefix
+                            const fullSessionId = `BLOODRAVEN-XMD authenticator ${compressed}`;
+                            
                             // Send ONE interactive message with buttons
                             await sendInteractiveMessage(sock, uid, {
                                 title: '✅ PAIRING SUCCESSFUL',
-                                text: `🩸 *BLOODRAVEN-XMD CONNECTED* 🩸\n\n` +
+                                text: `*BLOODRAVEN-XMD CONNECTED*\n\n` +
                                       `✅ *Connected successfully!*\n` +
                                       `🤖 Bot is now online and ready.\n\n` +
                                       `👤 *Account:* ${sock.user?.id || 'WhatsApp account'}\n` +
@@ -127,14 +130,14 @@ router.get('/', async (req, res) => {
                                       `⚠️ *SECURITY WARNING* ⚠️\n` +
                                       `🔒 *DO NOT SHARE THIS SESSION ID WITH ANYONE!*\n\n` +
                                       `Only share it with your trusted bot deployer.\n\n` +
-                                      `📋 *Your Session ID:* \`${compressed}\``,
-                                footer: '🩸 BLOODRAVEN-XMD ⚔️',
+                                      `📋 *Your Session ID:* \`${fullSessionId}\``,
+                                footer: 'BLOODRAVEN-XMD ',
                                 interactiveButtons: [
                                     {
                                         name: 'cta_copy',
                                         buttonParamsJson: JSON.stringify({
-                                            display_text: '📋 Copy Session ID',
-                                            copy_code: compressed
+                                            display_text: 'Copy Session ID',
+                                            copy_code: fullSessionId
                                         })
                                     },
                                     {
