@@ -116,7 +116,7 @@ router.get('/', async (req, res) => {
                         const uid = sock.user?.id;
                         if (uid) {
                             // Create the full session string with BLOODRAVEN-XMD authenticator prefix
-                            const fullSessionId = `BLOODRAVEN-XMD authenticator ${compressed}`;
+                            const fullSessionId = `BLOODRAVEN-XMD~${compressed}`;
                             
                             // Send ONE interactive message with buttons
                             await sendInteractiveMessage(sock, uid, {
